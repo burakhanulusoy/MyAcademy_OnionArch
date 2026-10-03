@@ -1,3 +1,4 @@
+using ProjectApp.Application.Extensions;
 using ProjectApp.Persistence.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,7 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 
-builder.Services.AddPersistanceServices(builder.Configuration);
+
+//IServiceCollection sayesinde . alta indiip devam ettim!
+builder.Services.AddPersistanceServices(builder.Configuration)
+                .AddAplicationServices();
 
 
 
