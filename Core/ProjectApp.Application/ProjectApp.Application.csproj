@@ -12,14 +12,12 @@
 
   <ItemGroup>
     <Folder Include="Features\Comments\CategoryComments\" />
-    <Folder Include="Features\Handlers\CategoryHandlers\" />
-    <Folder Include="Features\Queries\CategoryQueries\" />
-    <Folder Include="Features\Results\CategoryResults\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="9.5.4" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.5.4" />
+    <PackageReference Include="Mapster" Version="10.0.9" />
     <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.20" />
   </ItemGroup>
