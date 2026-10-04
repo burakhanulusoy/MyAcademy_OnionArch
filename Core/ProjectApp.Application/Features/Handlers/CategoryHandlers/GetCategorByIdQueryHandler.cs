@@ -13,8 +13,15 @@ namespace ProjectApp.Application.Features.Handlers.CategoryHandlers
         public async Task<BaseResult<GetCategoryByIdQueryResult>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
            var category = await _repository.GetByIdAsync(request.Id);
-           var mappedCategory = category.Adapt<GetCategoryByIdQueryResult>();
-           return BaseResult<GetCategoryByIdQueryResult>.Success(mappedCategory);
+
+            if(category is null)
+            {
+                return BaseResult<GetCategoryByIdQueryResult>.Fail($"Category with Id {request.Id} not found.");
+            }
+
+            var mappedCategory = category.Adapt<GetCategoryByIdQueryResult>();
+            
+            return BaseResult<GetCategoryByIdQueryResult>.Success(mappedCategory);
 
         }
     }

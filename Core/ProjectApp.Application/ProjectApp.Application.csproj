@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Comments\CategoryComments\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="9.5.4" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.5.4" />
     <PackageReference Include="Mapster" Version="10.0.9" />
