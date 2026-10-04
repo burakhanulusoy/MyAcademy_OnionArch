@@ -6,10 +6,10 @@ using ProjectApp.Domain.Entities;
 
 namespace ProjectApp.Application.Features.Handlers.CategoryHandlers
 {
-    public class RemoveCategoryCommnetHandler(IRepository<Category> _repository,
-                                              IUnitOfWork _unitOfWork) : IRequestHandler<RemoveCategoryComment, BaseResult<object>>
+    public class RemoveCategoryCommandHandler(IRepository<Category> _repository,
+                                              IUnitOfWork _unitOfWork) : IRequestHandler<RemoveCategoryCommand, BaseResult<object>>
     {
-        public async Task<BaseResult<object>> Handle(RemoveCategoryComment request, CancellationToken cancellationToken)
+        public async Task<BaseResult<object>> Handle(RemoveCategoryCommand request, CancellationToken cancellationToken)
         {
             
             var category = await _repository.GetByIdAsync(request.Id);

@@ -1,6 +1,7 @@
 using ProjectApp.Application.Extensions;
 using ProjectApp.Persistence.Extensions;
 using Scalar.AspNetCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 

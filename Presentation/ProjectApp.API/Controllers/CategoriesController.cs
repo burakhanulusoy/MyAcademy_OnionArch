@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ProjectApp.Application.Base;
 using ProjectApp.Application.Features.Comments.CategoryComments;
 using ProjectApp.Application.Features.Queries.CategoryQueries;
+using ProjectApp.Application.Features.Results.CategoryResults;
 
 namespace ProjectApp.API.Controllers
 {
@@ -19,7 +21,7 @@ namespace ProjectApp.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCategoryComment comment)
+        public async Task<IActionResult> Create(CreateCategoryCommand comment)
         {
             var result= await _mediator.Send(comment);
             return result.IsSuccessful ? Ok(result) : BadRequest(result);
@@ -27,7 +29,7 @@ namespace ProjectApp.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(UpdateCategoryComment comment)
+        public async Task<IActionResult> Update(UpdateCategoryCommand comment)
         {
             var result = await _mediator.Send(comment);
             return result.IsSuccessful ? Ok(result) : BadRequest(result);
@@ -36,18 +38,23 @@ namespace ProjectApp.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _mediator.Send(new RemoveCategoryComment(id));
+            var result = await _mediator.Send(new RemoveCategoryCommand(id));
             return result.IsSuccessful ? Ok(result) : BadRequest(result);
         }
 
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> GetById(int id)
+        //{
+        //    var result = await _mediator.Send(new GetCategoryByIdQuery(id));
+        //    return result.IsSuccessful ? Ok(result) : BadRequest(result);
+        //}
+
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<BaseResult<GetCategoryByIdQueryResult>>> GetById(int id)
         {
             var result = await _mediator.Send(new GetCategoryByIdQuery(id));
             return result.IsSuccessful ? Ok(result) : BadRequest(result);
         }
 
-
-
-        }
+    }
 }

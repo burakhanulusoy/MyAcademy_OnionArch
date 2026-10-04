@@ -12,7 +12,8 @@ namespace ProjectApp.Application.Features.Handlers.CategoryHandlers
     {
         public async Task<BaseResult<GetCategoryByIdQueryResult>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
-           var category = await _repository.GetByIdAsync(request.Id);
+          
+            var category = await _repository.GetByIdAsync(request.Id);
 
             if(category is null)
             {

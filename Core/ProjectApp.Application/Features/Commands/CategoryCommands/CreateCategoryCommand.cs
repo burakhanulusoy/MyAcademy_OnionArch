@@ -3,7 +3,7 @@ using ProjectApp.Application.Base;
 
 namespace ProjectApp.Application.Features.Comments.CategoryComments;
 
-public record CreateCategoryComment(string? Name):IRequest<BaseResult<object>>;
+public record CreateCategoryCommand(string? Name):IRequest<BaseResult<object>>;
 
 
 

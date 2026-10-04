@@ -8,11 +8,11 @@ using ProjectApp.Domain.Entities;
 
 namespace ProjectApp.Application.Features.Handlers.CategoryHandlers
 {
-    public class CreateCategoryCommnetHandler(IRepository<Category> _repository,
+    public class CreateCategoryCommandHandler(IRepository<Category> _repository,
                                               IUnitOfWork _unitOfWork,
-                                              IValidator<CreateCategoryComment> _validator) : IRequestHandler<CreateCategoryComment, BaseResult<object>>
+                                              IValidator<CreateCategoryCommand> _validator) : IRequestHandler<CreateCategoryCommand, BaseResult<object>>
     {
-        public async Task<BaseResult<object>> Handle(CreateCategoryComment request, CancellationToken cancellationToken)
+        public async Task<BaseResult<object>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
            
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);

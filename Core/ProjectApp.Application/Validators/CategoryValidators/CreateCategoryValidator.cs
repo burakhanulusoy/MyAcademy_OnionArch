@@ -3,7 +3,7 @@ using ProjectApp.Application.Features.Comments.CategoryComments;
 
 namespace ProjectApp.Application.Validators.CategoryValidators
 {
-    public class CreateCategoryValidator:AbstractValidator<CreateCategoryComment>
+    public class CreateCategoryValidator:AbstractValidator<CreateCategoryCommand>
     {
         public CreateCategoryValidator()
         {
