@@ -37,6 +37,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles(); // wwwroot içindeki dosyalar tarayýcýdan açýlabilsin
+
+
 app.UseAuthorization();
 
 app.MapControllers();

@@ -4,18 +4,21 @@ using MediatR;
 using ProjectApp.Application.Base;
 using ProjectApp.Application.Contracts;
 using ProjectApp.Application.Features.Comments.ProductComments;
+using ProjectApp.Application.Services.FileServices; // YENÝ
 using ProjectApp.Domain.Entities;
 
 namespace ProjectApp.Application.Features.Handlers.ProductHandlers
 {
     public class CreateProductCommandHandler(IRepository<Product> _repository,
-                                         IRepository<Category> _categoryRepository,
-                                         IUnitOfWork _unitOfWork,
-                                         IValidator<CreateProductCommand> _validator) : IRequestHandler<CreateProductCommand, BaseResult<object>>
+                                             IRepository<Category> _categoryRepository,
+                                             IUnitOfWork _unitOfWork,
+                                             IValidator<CreateProductCommand> _validator,
+                                             IFileService _fileService) // YENÝ
+        : IRequestHandler<CreateProductCommand, BaseResult<object>>
     {
         public async Task<BaseResult<object>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            // 1. Ucuz kontroller: veritabanýna gitmeden format/kurallar
+            // 1. Validasyon (görsel kontrolü de burada yapýlýyor)
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
@@ -23,8 +26,7 @@ namespace ProjectApp.Application.Features.Handlers.ProductHandlers
                 return BaseResult<object>.Fail(validationResult.Errors);
             }
 
-            // 2. Veritabaný kontrolü: kategori gerçekten var mý?
-            //value deme sebebim categoryId? böyle budaa oto inte dönüþmez hata veriri hatayý gidermek için value oto int yapar
+            // 2. Kategori var mý?
             var category = await _categoryRepository.GetByIdAsync(request.CategoryId!.Value);
 
             if (category is null)
@@ -32,14 +34,25 @@ namespace ProjectApp.Application.Features.Handlers.ProductHandlers
                 return BaseResult<object>.Fail($"Id'si {request.CategoryId} olan kategori bulunamadý.");
             }
 
-            // 3. Kayýt
+            // 3. Map'le
             var mappedProduct = request.Adapt<Product>();
 
-            await _repository.CreateAsync(mappedProduct);
+            // YENÝ: Görseli diske kaydet, dönen kýsa yolu entity'ye yaz
+            // Validasyondan geçtiði için Image burada null olamaz, o yüzden ! koyduk
+            mappedProduct.ImageUrl = await _fileService.UploadAsync(request.Image!, "Product");
 
+            // 4. Kayýt
+            await _repository.CreateAsync(mappedProduct);
             var result = await _unitOfWork.SaveChangesAsync();
 
-            return result ? BaseResult<object>.Success() : BaseResult<object>.Fail("Ürün oluþturulamadý.");
+            // YENÝ: Veritabanýna yazýlamadýysa diskteki görsel boþta kalmasýn, sil
+            if (!result)
+            {
+                _fileService.Delete(mappedProduct.ImageUrl);
+                return BaseResult<object>.Fail("Ürün oluþturulamadý.");
+            }
+
+            return BaseResult<object>.Success();
         }
     }
 }

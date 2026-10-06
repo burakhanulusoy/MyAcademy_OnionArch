@@ -1,6 +1,6 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
+using ProjectApp.Application.Services.FileServices;
 
 namespace ProjectApp.Application.Extensions
 {
@@ -16,6 +16,8 @@ namespace ProjectApp.Application.Extensions
                 options.RegisterServicesFromAssemblies(typeof(ApplicationAssembly).Assembly);
 
             });
+
+            services.AddScoped<IFileService, FileService>();
 
             services.AddValidatorsFromAssembly(typeof(ApplicationAssembly).Assembly);
             // services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
