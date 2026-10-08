@@ -20,6 +20,9 @@ namespace ProjectApp.Application.Base
         //   böylece Errors hiçbir zaman null olmaz ("hata yok" = boþ liste).
         // IReadOnlyList ? dýþarýdan Add/Remove yapýlamaz, sadece okunabilir.
         // init ? liste sadece oluþturulurken verilebilir, sonradan baþka liste atanamaz.
+
+
+
         public IReadOnlyList<Error> Errors { get; init; } = new List<Error>();
 
         // Ýþlemin baþarýlý olup olmadýðýný hesaplar.
