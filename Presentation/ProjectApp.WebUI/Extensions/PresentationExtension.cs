@@ -1,4 +1,6 @@
 ﻿using ProjectApp.WebUI.Services.CategoryServices;
+using ProjectApp.WebUI.Services.FileServices;
+using ProjectApp.WebUI.Services.ProductServices;
 
 namespace ProjectApp.WebUI.Extensions
 {
@@ -12,9 +14,15 @@ namespace ProjectApp.WebUI.Extensions
                 client.BaseAddress = new Uri(_configuration["ApiBaseUrl"]);
             });
 
+            services.AddHttpClient<IProductService, ProductService>(client =>
+            {
+                client.BaseAddress = new Uri(_configuration["ApiBaseUrl"]);
+            });
 
-
-
+            services.AddHttpClient<IFileService, FileService>(client =>
+            {
+                client.BaseAddress = new Uri(_configuration["ApiBaseUrl"]!);
+            });
             return services;
 
 

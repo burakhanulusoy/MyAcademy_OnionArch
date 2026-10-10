@@ -1,0 +1,58 @@
+﻿@model List<GetProductsWithCategoryQueryResult>
+@inject IConfiguration Configuration
+
+@{
+    ViewData["Title"] = "Ürünler";
+    var imageBaseUrl = Configuration["ImageBaseUrl"]; // https://localhost:7256
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Ürünler</h2>
+    <a asp-action="CreateProduct" class="btn btn-primary">Yeni Ürün</a>
+</div>
+
+@if (TempData["Error"] is string error)
+{
+    <div class="alert alert-danger">@error</div>
+}
+
+<table class="table table-bordered table-hover align-middle">
+    <thead class="table-light">
+        <tr>
+            <th style="width: 100px">Görsel</th>
+            <th>Ürün Adı</th>
+            <th>Kategori</th>
+            <th>Fiyat</th>
+            <th>Açıklama</th>
+            <th style="width: 180px">İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        @* https://localhost:7256 + /Images/Product/abc.jpg *@
+                        <img src="@(imageBaseUrl + item.ImageUrl)" alt="@item.Name"
+                             style="width: 80px; height: 80px; object-fit: cover;" class="rounded" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Görsel yok</span>
+                    }
+                </td>
+                <td>@item.Name</td>
+                <td>@item.Category?.Name</td>
+                <td>@item.Price.ToString("N2") ₺</td>
+                <td>@item.Description</td>
+                <td>
+                    <a asp-action="UpdateProduct" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Güncelle</a>
+                    <a asp-action="DeleteProduct" asp-route-id="@item.Id" class="btn btn-sm btn-danger"
+                       onclick="return confirm('Bu ürünü silmek istediğinize emin misiniz?')">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

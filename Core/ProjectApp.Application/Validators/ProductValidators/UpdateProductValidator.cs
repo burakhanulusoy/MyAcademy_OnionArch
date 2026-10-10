@@ -25,16 +25,8 @@ namespace ProjectApp.Application.Validators.ProductValidators
                 .NotNull().WithMessage("Kategori seçilmelidir.")
                 .GreaterThan(0).WithMessage("Geçerli bir kategori seçilmelidir.");
 
-            When(x => x.Image is not null, () =>
-            {
-                RuleFor(x => x.Image!.Length)
-                    .LessThanOrEqualTo(2 * 1024 * 1024).WithMessage("Görsel en fazla 2 MB olabilir.");
-
-                RuleFor(x => Path.GetExtension(x.Image!.FileName).ToLowerInvariant())
-                    .Must(ext => new[] { ".jpg", ".jpeg", ".png", ".webp" }.Contains(ext))
-                    .WithMessage("Sadece jpg, jpeg, png veya webp yüklenebilir.")
-                    .OverridePropertyName("Image");
-            });
+            RuleFor(x => x.ImageUrl)
+      .NotEmpty().WithMessage("Ürün görseli yüklenmelidir.");
         }
     }
 }

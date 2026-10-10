@@ -12,14 +12,14 @@ namespace ProjectApp.API.Controllers
     public class ProductsController(IMediator _mediator) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] CreateProductCommand command)
+        public async Task<IActionResult> Create(CreateProductCommand command)
         {
             var result = await _mediator.Send(command);
             return result.IsSuccessful ? Ok(result) : BadRequest(result);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm] UpdateProductCommand command)
+        public async Task<IActionResult> Update(UpdateProductCommand command)
         {
             var result = await _mediator.Send(command);
             return result.IsSuccessful ? Ok(result) : BadRequest(result);

@@ -45,31 +45,25 @@ namespace ProjectApp.Application.Features.Handlers.ProductHandlers
             // 4. Yeni deðerleri mevcut ürünün üzerine yaz (ImageUrl'a dokunmaz)
             request.Adapt(existingProduct);
 
-            // YENÝ: Eski görselin yolunu sakla, gerekirse sonra sileceðiz
+            // Eski görselin yolunu Adapt'ten ÖNCE sakla
+            // (Adapt artýk ImageUrl'u da üzerine yazýyor)
             var oldImageUrl = existingProduct.ImageUrl;
 
-            // YENÝ: Kullanýcý yeni görsel gönderdiyse yükle
-            // Göndermediyse bu blok atlanýr, eski görsel aynen kalýr
-            if (request.Image is not null)
-            {
-                existingProduct.ImageUrl = await _fileService.UploadAsync(request.Image, "Product");
-            }
+            request.Adapt(existingProduct);
 
             _repository.Update(existingProduct);
             var result = await _unitOfWork.SaveChangesAsync();
 
             if (!result)
             {
-                // YENÝ: Kayýt baþarýsýzsa yeni yüklenen görseli sil (eskisi yerinde kalsýn)
-                if (request.Image is not null)
-                    _fileService.Delete(existingProduct.ImageUrl);
-
                 return BaseResult<object>.Fail("Ürün güncellenirken bir hata oluþtu.");
             }
 
-            // YENÝ: Kayýt baþarýlý ve yeni görsel geldiyse artýk eskisini silebiliriz
-            if (request.Image is not null)
+            // Kayýt baþarýlý ve görsel deðiþtiyse eskisini sil
+            if (oldImageUrl != existingProduct.ImageUrl)
+            {
                 _fileService.Delete(oldImageUrl);
+            }
 
             return BaseResult<object>.Success();
         }

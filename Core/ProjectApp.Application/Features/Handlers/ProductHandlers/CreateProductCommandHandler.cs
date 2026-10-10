@@ -37,9 +37,7 @@ namespace ProjectApp.Application.Features.Handlers.ProductHandlers
             // 3. Map'le
             var mappedProduct = request.Adapt<Product>();
 
-            // YENÝ: Görseli diske kaydet, dönen kýsa yolu entity'ye yaz
-            // Validasyondan geçtiði için Image burada null olamaz, o yüzden ! koyduk
-            mappedProduct.ImageUrl = await _fileService.UploadAsync(request.Image!, "Product");
+     
 
             // 4. Kayýt
             await _repository.CreateAsync(mappedProduct);

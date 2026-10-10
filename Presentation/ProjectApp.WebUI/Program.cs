@@ -1,7 +1,13 @@
+using ProjectApp.WebUI.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddPresentation(builder.Configuration);
+
+
 
 var app = builder.Build();
 

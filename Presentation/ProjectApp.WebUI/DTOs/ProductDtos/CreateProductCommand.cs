@@ -1,7 +1,10 @@
-﻿namespace ProjectApp.WebUI.DTOs.ProductDtos;
+﻿using System.Text.Json.Serialization;
+
+namespace ProjectApp.WebUI.DTOs.ProductDtos;
 
 public record CreateProductCommand(string? Name,
                                    decimal? Price,
                                    string? Description,
                                    int? CategoryId,
-                                   IFormFile? Image);
+                                   string? ImageUrl,                          // API'ye bu gidecek
+                                   [property: JsonIgnore] IFormFile? Image); // formdan gelen dosya, JSON'a girmesin
